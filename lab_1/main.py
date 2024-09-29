@@ -3,6 +3,7 @@ import sys
 
 from os import mkdir ## import block
 
+
 try:
     import datetime
     import json
@@ -68,6 +69,7 @@ class MainWindow(QMainWindow):
             )
         self.actionQuit.triggered.connect(lambda: self.close_app())
     
+
     def new_note(self): ## creating new note
         if self.unsaved == True:
             self.about_quit.save_changes_window()
@@ -82,6 +84,7 @@ class MainWindow(QMainWindow):
         self.saveButton.setDisabled(True)
         self.actionSaveNote.setDisabled(True)
     
+
     def selectItem(self, item_name): ## func to get note from list
         if item_name != None:
             iterator = QTreeWidgetItemIterator(self.notesList, QTreeWidgetItemIterator.All)
@@ -92,6 +95,7 @@ class MainWindow(QMainWindow):
                     self.load_note(item, None)
                 iterator += 1
     
+
     def note_changed(self): # if note title changes window title changes too
         if self.get_note_title().strip() != "":
             self.setWindowTitle("MyMemo - " + self.get_note_title().strip())
@@ -105,6 +109,7 @@ class MainWindow(QMainWindow):
             self.saveButton.setEnabled(True)
             self.actionSaveNote.setEnabled(True)
     
+
     def redraw_list_menu(self): ## redrawing list one by one
         self.notesList.clear()
         for element in list(self.notes_dict.keys()):
@@ -113,6 +118,7 @@ class MainWindow(QMainWindow):
                                        self.notes_dict[element]["date"]]
                                       ).text(0)
         
+
     def note_unsaved(self, status=True): ## marks that note unsaved
         if status:
             if self.windowTitle()[-1] != "*":
@@ -127,6 +133,7 @@ class MainWindow(QMainWindow):
             self.actionSaveNote.setEnabled(True)
             self.saveButton.setEnabled(True)
     
+
     def load_note(self, item, last_item): ## load note from memory
         if item != last_item and item != None:
             self.last = item.text(0)
@@ -144,6 +151,7 @@ class MainWindow(QMainWindow):
                 self.actionRemoveNote.setEnabled(True)
                 self.saveButton.setDisabled(True)
                 self.actionSaveNote.setDisabled(True)
+
 
     def delete_note(self): ## delete note
         self.last = None
@@ -174,12 +182,15 @@ class MainWindow(QMainWindow):
             }
             json.dump(self.file, file, indent=4)
     
+
     def get_note_title(self):
         return str(self.noteTitleEdit.text())
     
+
     def get_note_text(self):
         return self.noteTextEdit.toPlainText() # [note] returns [' ', '\t', '\n']
     
+
     def closeEvent(self, event: QtGui.QCloseEvent): ## if user want to close window we save note [trigger]
         if self.unsaved == False:
             app.closeAllWindows()
@@ -194,6 +205,7 @@ class MainWindow(QMainWindow):
             self.close_app()
             event.ignore()
     
+
     def close_app(self): ## closing app from code
         with open("userFiles/data.json", "w", encoding="utf8") as file:
             self.file = {
@@ -224,6 +236,7 @@ class AboutWindow(QWidget): ## window can be called from upper bar or pressing C
         super().__init__()
         uic.loadUi("src/forms/about_window.ui", self)
     
+
     def help_show(self):
         if self.isVisible():
             self.close()
@@ -233,6 +246,7 @@ class AboutWindow(QWidget): ## window can be called from upper bar or pressing C
                 )
             self.show()
     
+
     def closeEvent(self, event: QtGui.QCloseEvent):
         self.close()
 
@@ -245,6 +259,7 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
         self.deleteButton.clicked.connect(lambda: self.delete_changes())
         self.cancelButton.clicked.connect(lambda: self.cancel_changes())
 
+
     def save_changes_window(self): ## if note isn't saved - ask to save
         self.move(
             mainWin.x() + (mainWin.width() // 2 - self.width() // 2),
@@ -252,6 +267,7 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
             )
         self.show()
     
+
     def save_changes(self):
         if mainWin.last == None:
             if mainWin.get_note_title() not in list(mainWin.notes_dict.keys()):
@@ -311,6 +327,7 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
         if self.isVisible(): ## app closes only if it asked about quit, else just saving without exiting
             mainWin.close_app()
     
+
     def delete_changes(self):
         mainWin.note_unsaved(False)
         with open("userFiles/data.json", "w", encoding="utf8") as file:
@@ -321,8 +338,10 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
             json.dump(mainWin.file, file, indent=4)
         app.closeAllWindows()
         
+
     def cancel_changes(self):
         self.close()
+
 
     def closeEvent(self, event: QtGui.QCloseEvent):
         self.cancel_changes()
@@ -330,6 +349,7 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
