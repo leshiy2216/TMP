@@ -1,24 +1,11 @@
+import datetime
+import json
 import subprocess
 import sys
 
-from os import mkdir ## import block
-
-
-try:
-    import datetime
-    import json
-
-    from PyQt5 import QtGui, QtWidgets, uic
-    from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTreeWidgetItemIterator
-except:
-    for library in ["datetime", "PyQt5", "time", "json"]:
-        subprocess.run(["pip install", library])
-        
-    import datetime
-    import json
-
-    from PyQt5 import QtGui, QtWidgets, uic, QtCore
-    from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTreeWidgetItemIterator
+from os import mkdir
+from PyQt5 import QtGui, QtWidgets, uic
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTreeWidgetItemIterator
 
 
 class MainWindow(QMainWindow):
