@@ -9,7 +9,15 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTreeWidgetItemI
 
 
 class MainWindow(QMainWindow):
-    def __init__(self): ## initialization
+    """
+    Главное окно приложения.
+    """
+
+    
+    def __init__(self):
+        """
+        Инициализация главного окна.
+        """
         super().__init__()
         uic.loadUi("src/forms/main_window.ui", self)
         self.about_window = AboutWindow(self)
@@ -57,7 +65,10 @@ class MainWindow(QMainWindow):
         self.actionQuit.triggered.connect(lambda: self.close_app())
     
 
-    def new_note(self): ## creating new note
+    def new_note(self):
+        """
+        Создание новой заметки.
+        """
         if self.unsaved == True:
             self.about_quit.save_changes_window()
         self.last = None
@@ -72,7 +83,13 @@ class MainWindow(QMainWindow):
         self.actionSaveNote.setDisabled(True)
     
 
-    def selectItem(self, item_name): ## func to get note from list
+    def selectItem(self, item_name):
+        """
+        Выбор заметки из списка.
+
+        Args:
+            item_name (str): Название заметки.
+        """
         if item_name != None:
             iterator = QTreeWidgetItemIterator(self.notesList, QTreeWidgetItemIterator.All)
             while iterator.value():
@@ -83,7 +100,10 @@ class MainWindow(QMainWindow):
                 iterator += 1
     
 
-    def note_changed(self): # if note title changes window title changes too
+    def note_changed(self):
+        """
+        Обработка изменения заметки.
+        """
         if self.get_note_title().strip() != "":
             self.setWindowTitle("MyMemo - " + self.get_note_title().strip())
         else:
@@ -97,7 +117,10 @@ class MainWindow(QMainWindow):
             self.actionSaveNote.setEnabled(True)
     
 
-    def redraw_list_menu(self): ## redrawing list one by one
+    def redraw_list_menu(self):
+        """
+        Перерисовка списка заметок.
+        """
         self.notesList.clear()
         for element in list(self.notes_dict.keys()):
             self.last = QtWidgets.QTreeWidgetItem(self.notesList, 
@@ -106,7 +129,13 @@ class MainWindow(QMainWindow):
                                       ).text(0)
         
 
-    def note_unsaved(self, status=True): ## marks that note unsaved
+    def note_unsaved(self, status=True):
+        """
+        Пометка состояния несохраненной заметки.
+
+        Args:
+            status (bool): Состояние несохраненной заметки.
+        """
         if status:
             if self.windowTitle()[-1] != "*":
                 self.setWindowTitle(self.windowTitle() + "*")
@@ -121,7 +150,14 @@ class MainWindow(QMainWindow):
             self.saveButton.setEnabled(True)
     
 
-    def load_note(self, item, last_item): ## load note from memory
+    def load_note(self, item, last_item):
+        """
+        Загрузка заметки из памяти.
+
+        Args:
+            item (QTreeWidgetItem): Текущий элемент.
+            last_item (QTreeWidgetItem): Предыдущий элемент.
+        """
         if item != last_item and item != None:
             self.last = item.text(0)
             if item != None:
@@ -140,7 +176,10 @@ class MainWindow(QMainWindow):
                 self.actionSaveNote.setDisabled(True)
 
 
-    def delete_note(self): ## delete note
+    def delete_note(self):
+        """
+        Удаление заметки.
+        """
         self.last = None
         if len(self.notesList.selectedItems()) != 0:
             note_name = self.notesList.selectedItems()[0].text(0)
@@ -171,14 +210,32 @@ class MainWindow(QMainWindow):
     
 
     def get_note_title(self):
+        """
+        Получение заголовка заметки.
+
+        Returns:
+            str: Заголовок заметки.
+        """
         return str(self.noteTitleEdit.text())
     
 
     def get_note_text(self):
+        """
+        Получение текста заметки.
+
+        Returns:
+            str: Текст заметки.
+        """
         return self.noteTextEdit.toPlainText() # [note] returns [' ', '\t', '\n']
     
 
-    def closeEvent(self, event: QtGui.QCloseEvent): ## if user want to close window we save note [trigger]
+    def closeEvent(self, event: QtGui.QCloseEvent):
+        """
+        Обработка закрытия окна.
+
+        Args:
+            event (QtGui.QCloseEvent): Событие закрытия.
+        """
         if self.unsaved == False:
             app.closeAllWindows()
             event.accept()
@@ -193,7 +250,10 @@ class MainWindow(QMainWindow):
             event.ignore()
     
 
-    def close_app(self): ## closing app from code
+    def close_app(self):
+        """
+        Закрытие приложения.
+        """
         with open("userFiles/data.json", "w", encoding="utf8") as file:
             self.file = {
                 "notes_dict": self.notes_dict,
@@ -208,8 +268,20 @@ class MainWindow(QMainWindow):
             app.closeAllWindows()   
 
 
-class TableWidgetItem(QtWidgets.QTableWidgetItem): ## reorganization of sorting
+class TableWidgetItem(QtWidgets.QTableWidgetItem):
+    """
+    Переопределение сортировки
+    """
     def __lt__(self, other):
+        """
+        Переопределение оператора.
+
+        Args:
+            other (TableWidgetItem): Другой элемент для сравнения.
+        
+        Returns:
+            bool: Результат сравнения.
+        """
         print(0)
         if self.notesList.sortColumn == 1:
             print(1)
@@ -218,13 +290,22 @@ class TableWidgetItem(QtWidgets.QTableWidgetItem): ## reorganization of sorting
             return self.notesList[key2]["date_to_seconds"] < self.notesList[key1]["date_to_seconds"]
         
 
-class AboutWindow(QWidget): ## window can be called from upper bar or pressing CTRL+H
+class AboutWindow(QWidget):
+    """
+    Окно "О программе", вызываемое из верхнего меню или по нажатию CTRL+H.
+    """
     def __init__(self, *args):
+        """
+        Инициализация
+        """
         super().__init__()
         uic.loadUi("src/forms/about_window.ui", self)
     
 
     def help_show(self):
+        """
+        Показать окно "О программе".
+        """
         if self.isVisible():
             self.close()
         else:
@@ -235,11 +316,20 @@ class AboutWindow(QWidget): ## window can be called from upper bar or pressing C
     
 
     def closeEvent(self, event: QtGui.QCloseEvent):
+        """
+        Закрытие
+        """
         self.close()
 
 
-class AboutQuit(QWidget): ## window activating if you try to close app without saving
+class AboutQuit(QWidget):
+    """
+    Окно "Сохранить изменения", если пользователь выходит без сохранения
+    """
     def __init__(self, *args):
+        """
+        Инициализация окна "Сохранить изменения".
+        """
         super().__init__()
         uic.loadUi("src/forms/about_quit.ui", self)
         self.saveButton.clicked.connect(lambda: self.save_changes())
@@ -247,7 +337,10 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
         self.cancelButton.clicked.connect(lambda: self.cancel_changes())
 
 
-    def save_changes_window(self): ## if note isn't saved - ask to save
+    def save_changes_window(self):
+        """
+        Показать окно "Сохранить изменения".
+        """
         self.move(
             mainWin.x() + (mainWin.width() // 2 - self.width() // 2),
             mainWin.y() + (mainWin.height() // 2 - self.height() // 2)
@@ -256,6 +349,9 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
     
 
     def save_changes(self):
+        """
+        Сохранить изменения в заметке.
+        """
         if mainWin.last == None:
             if mainWin.get_note_title() not in list(mainWin.notes_dict.keys()):
                 time_now = datetime.datetime.now()
@@ -316,6 +412,9 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
     
 
     def delete_changes(self):
+        """
+        Удаление изменений
+        """
         mainWin.note_unsaved(False)
         with open("userFiles/data.json", "w", encoding="utf8") as file:
             mainWin.file = {
@@ -327,14 +426,29 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
         
 
     def cancel_changes(self):
+        """
+        Отмена изменений
+        """
         self.close()
 
 
     def closeEvent(self, event: QtGui.QCloseEvent):
+        """
+        Обработчик события закрытия окна.
+        Args:
+        event (QtGui.QCloseEvent): Событие закрытия окна.
+        """
         self.cancel_changes()
 
 
 def except_hook(cls, exception, traceback):
+    """
+    Обработчик исключений.
+    Args:
+        cls (type): Тип исключения.
+        exception (Exception): Экземпляр исключения.
+        traceback (traceback): Объект трассировки исключения.
+    """
     sys.__excepthook__(cls, exception, traceback)
 
 
