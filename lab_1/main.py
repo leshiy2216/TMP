@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     """
 
     
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Инициализация главного окна.
         """
@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
         self.actionQuit.triggered.connect(lambda: self.close_app())
     
 
-    def new_note(self):
+    def new_note(self) -> None:
         """
         Создание новой заметки.
         """
@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
         self.actionSaveNote.setDisabled(True)
     
 
-    def selectItem(self, item_name):
+    def selectItem(self, item_name: Optional[str]) -> None:
         """
         Выбор заметки из списка.
 
@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
                 iterator += 1
     
 
-    def note_changed(self):
+    def note_changed(self) -> None:
         """
         Обработка изменения заметки.
         """
@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
             self.actionSaveNote.setEnabled(True)
     
 
-    def redraw_list_menu(self):
+    def redraw_list_menu(self) -> None:
         """
         Перерисовка списка заметок.
         """
@@ -129,7 +129,7 @@ class MainWindow(QMainWindow):
                                       ).text(0)
         
 
-    def note_unsaved(self, status=True):
+    def note_unsaved(self, status: bool = True) -> None:
         """
         Пометка состояния несохраненной заметки.
 
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
             self.saveButton.setEnabled(True)
     
 
-    def load_note(self, item, last_item):
+    def load_note(self, item: Optional[QTreeWidgetItem], last_item: Optional[QTreeWidgetItem]) -> None:
         """
         Загрузка заметки из памяти.
 
@@ -176,7 +176,7 @@ class MainWindow(QMainWindow):
                 self.actionSaveNote.setDisabled(True)
 
 
-    def delete_note(self):
+    def delete_note(self) -> None:
         """
         Удаление заметки.
         """
@@ -209,7 +209,7 @@ class MainWindow(QMainWindow):
             json.dump(self.file, file, indent=4)
     
 
-    def get_note_title(self):
+    def get_note_title(self) -> str:
         """
         Получение заголовка заметки.
 
@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
         return str(self.noteTitleEdit.text())
     
 
-    def get_note_text(self):
+    def get_note_text(self) -> str:
         """
         Получение текста заметки.
 
@@ -229,7 +229,7 @@ class MainWindow(QMainWindow):
         return self.noteTextEdit.toPlainText() # [note] returns [' ', '\t', '\n']
     
 
-    def closeEvent(self, event: QtGui.QCloseEvent):
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
         """
         Обработка закрытия окна.
 
@@ -250,7 +250,7 @@ class MainWindow(QMainWindow):
             event.ignore()
     
 
-    def close_app(self):
+    def close_app(self) -> None:
         """
         Закрытие приложения.
         """
@@ -272,7 +272,7 @@ class TableWidgetItem(QtWidgets.QTableWidgetItem):
     """
     Переопределение сортировки
     """
-    def __lt__(self, other):
+    def __lt__(self, other: 'TableWidgetItem') -> bool:
         """
         Переопределение оператора.
 
@@ -294,7 +294,7 @@ class AboutWindow(QWidget):
     """
     Окно "О программе", вызываемое из верхнего меню или по нажатию CTRL+H.
     """
-    def __init__(self, *args):
+    def __init__(self, *args: tuple) -> None:
         """
         Инициализация
         """
@@ -302,7 +302,7 @@ class AboutWindow(QWidget):
         uic.loadUi("src/forms/about_window.ui", self)
     
 
-    def help_show(self):
+    def help_show(self) -> None:
         """
         Показать окно "О программе".
         """
@@ -315,7 +315,7 @@ class AboutWindow(QWidget):
             self.show()
     
 
-    def closeEvent(self, event: QtGui.QCloseEvent):
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
         """
         Закрытие
         """
@@ -326,7 +326,7 @@ class AboutQuit(QWidget):
     """
     Окно "Сохранить изменения", если пользователь выходит без сохранения
     """
-    def __init__(self, *args):
+    def __init__(self, *args: tuple) -> None:
         """
         Инициализация окна "Сохранить изменения".
         """
@@ -337,7 +337,7 @@ class AboutQuit(QWidget):
         self.cancelButton.clicked.connect(lambda: self.cancel_changes())
 
 
-    def save_changes_window(self):
+    def save_changes_window(self) -> None:
         """
         Показать окно "Сохранить изменения".
         """
@@ -348,7 +348,7 @@ class AboutQuit(QWidget):
         self.show()
     
 
-    def save_changes(self):
+    def save_changes(self) -> None:
         """
         Сохранить изменения в заметке.
         """
@@ -411,7 +411,7 @@ class AboutQuit(QWidget):
             mainWin.close_app()
     
 
-    def delete_changes(self):
+    def delete_changes(self) -> None:
         """
         Удаление изменений
         """
@@ -425,14 +425,14 @@ class AboutQuit(QWidget):
         app.closeAllWindows()
         
 
-    def cancel_changes(self):
+    def cancel_changes(self) -> None:
         """
         Отмена изменений
         """
         self.close()
 
 
-    def closeEvent(self, event: QtGui.QCloseEvent):
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
         """
         Обработчик события закрытия окна.
         Args:
@@ -441,7 +441,7 @@ class AboutQuit(QWidget):
         self.cancel_changes()
 
 
-def except_hook(cls, exception, traceback):
+def except_hook(cls: type, exception: Exception, traceback: Optional[traceback]) -> None:
     """
     Обработчик исключений.
     Args:
