@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
         self.actionSaveNote.setDisabled(True)
     
 
-    def selectItem(self, item_name: Optional[str]) -> None:
+    def select_item(self, item_name: Optional[str]) -> None:
         """
         Выбор заметки из списка.
 
@@ -229,7 +229,7 @@ class MainWindow(QMainWindow):
         return self.noteTextEdit.toPlainText() # [note] returns [' ', '\t', '\n']
     
 
-    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+    def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
         Обработка закрытия окна.
 
@@ -315,7 +315,7 @@ class AboutWindow(QWidget):
             self.show()
     
 
-    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+    def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
         Закрытие
         """
@@ -395,7 +395,7 @@ class AboutQuit(QWidget):
             }
         mainWin.redraw_list_menu()
         mainWin.note_unsaved(False)
-        mainWin.selectItem(mainWin.last)
+        mainWin.select_item(mainWin.last)
         mainWin.saveButton.setDisabled(True)
         mainWin.actionSaveNote.setDisabled(True)
         mainWin.deleteButton.setEnabled(True)
@@ -432,7 +432,7 @@ class AboutQuit(QWidget):
         self.close()
 
 
-    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+    def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
         Обработчик события закрытия окна.
         Args:
