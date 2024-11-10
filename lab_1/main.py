@@ -2,8 +2,8 @@ import datetime
 import json
 import subprocess
 import sys
-
 from os import mkdir
+
 from PyQt5 import QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTreeWidgetItemIterator
 
