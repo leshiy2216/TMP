@@ -295,9 +295,9 @@ class AboutWindow(QWidget):
         if self.isVisible():
             self.close()
         else:
-            self.move( ## middle align
-                mainWin.x() + (mainWin.width() // 2 - self.width() // 2), mainWin.y() + (mainWin.height() // 2 - self.height() // 2)
-                )
+            self.move(mainWin.x() + (mainWin.width() // 2 - self.width() // 2), 
+                      mainWin.y() + (mainWin.height() // 2 - self.height() // 2)
+                      )
             self.show()
     
     def close_event(self, event: QtGui.QCloseEvent) -> None:
@@ -420,7 +420,9 @@ class AboutQuit(QWidget):
         """
         self.cancel_changes()
 
-def except_hook(cls: type, exception: Exception, traceback: Optional[traceback]) -> None:
+
+def except_hook(cls: type, exception: Exception,
+                traceback: Optional[traceback]) -> None:
     """
     Обработчик исключений.
     Args:
