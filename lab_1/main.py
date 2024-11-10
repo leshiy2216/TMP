@@ -12,8 +12,6 @@ class MainWindow(QMainWindow):
     """
     Главное окно приложения.
     """
-
-    
     def __init__(self) -> None:
         """
         Инициализация главного окна.
@@ -63,7 +61,6 @@ class MainWindow(QMainWindow):
             lambda: self.about_window.help_show()
             )
         self.actionQuit.triggered.connect(lambda: self.close_app())
-    
 
     def new_note(self) -> None:
         """
@@ -82,7 +79,6 @@ class MainWindow(QMainWindow):
         self.saveButton.setDisabled(True)
         self.actionSaveNote.setDisabled(True)
     
-
     def select_item(self, item_name: Optional[str]) -> None:
         """
         Выбор заметки из списка.
@@ -99,7 +95,6 @@ class MainWindow(QMainWindow):
                     self.load_note(item, None)
                 iterator += 1
     
-
     def note_changed(self) -> None:
         """
         Обработка изменения заметки.
@@ -115,7 +110,6 @@ class MainWindow(QMainWindow):
         else:
             self.saveButton.setEnabled(True)
             self.actionSaveNote.setEnabled(True)
-    
 
     def redraw_list_menu(self) -> None:
         """
@@ -127,7 +121,6 @@ class MainWindow(QMainWindow):
                                       [self.notes_dict[element]["title"],
                                        self.notes_dict[element]["date"]]
                                       ).text(0)
-        
 
     def note_unsaved(self, status: bool = True) -> None:
         """
@@ -148,7 +141,6 @@ class MainWindow(QMainWindow):
             self.unsaved = False
             self.actionSaveNote.setEnabled(True)
             self.saveButton.setEnabled(True)
-    
 
     def load_note(self, item: Optional[QTreeWidgetItem], last_item: Optional[QTreeWidgetItem]) -> None:
         """
@@ -174,7 +166,6 @@ class MainWindow(QMainWindow):
                 self.actionRemoveNote.setEnabled(True)
                 self.saveButton.setDisabled(True)
                 self.actionSaveNote.setDisabled(True)
-
 
     def delete_note(self) -> None:
         """
@@ -207,7 +198,6 @@ class MainWindow(QMainWindow):
                 "last": self.last
             }
             json.dump(self.file, file, indent=4)
-    
 
     def get_note_title(self) -> str:
         """
@@ -218,7 +208,6 @@ class MainWindow(QMainWindow):
         """
         return str(self.noteTitleEdit.text())
     
-
     def get_note_text(self) -> str:
         """
         Получение текста заметки.
@@ -228,7 +217,6 @@ class MainWindow(QMainWindow):
         """
         return self.noteTextEdit.toPlainText() # [note] returns [' ', '\t', '\n']
     
-
     def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
         Обработка закрытия окна.
@@ -248,7 +236,6 @@ class MainWindow(QMainWindow):
         else:
             self.close_app()
             event.ignore()
-    
 
     def close_app(self) -> None:
         """
@@ -300,7 +287,6 @@ class AboutWindow(QWidget):
         """
         super().__init__()
         uic.loadUi("src/forms/about_window.ui", self)
-    
 
     def help_show(self) -> None:
         """
@@ -314,7 +300,6 @@ class AboutWindow(QWidget):
                 )
             self.show()
     
-
     def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
         Закрытие
@@ -336,7 +321,6 @@ class AboutQuit(QWidget):
         self.deleteButton.clicked.connect(lambda: self.delete_changes())
         self.cancelButton.clicked.connect(lambda: self.cancel_changes())
 
-
     def save_changes_window(self) -> None:
         """
         Показать окно "Сохранить изменения".
@@ -346,7 +330,6 @@ class AboutQuit(QWidget):
             mainWin.y() + (mainWin.height() // 2 - self.height() // 2)
             )
         self.show()
-    
 
     def save_changes(self) -> None:
         """
@@ -409,7 +392,6 @@ class AboutQuit(QWidget):
             json.dump(mainWin.file, file, indent=4)
         if self.isVisible(): ## app closes only if it asked about quit, else just saving without exiting
             mainWin.close_app()
-    
 
     def delete_changes(self) -> None:
         """
@@ -424,13 +406,11 @@ class AboutQuit(QWidget):
             json.dump(mainWin.file, file, indent=4)
         app.closeAllWindows()
         
-
     def cancel_changes(self) -> None:
         """
         Отмена изменений
         """
         self.close()
-
 
     def close_event(self, event: QtGui.QCloseEvent) -> None:
         """
@@ -439,7 +419,6 @@ class AboutQuit(QWidget):
         event (QtGui.QCloseEvent): Событие закрытия окна.
         """
         self.cancel_changes()
-
 
 def except_hook(cls: type, exception: Exception, traceback: Optional[traceback]) -> None:
     """
