@@ -332,6 +332,7 @@ class AboutQuit(QWidget): ## window activating if you try to close app without s
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     mainWin = MainWindow()
