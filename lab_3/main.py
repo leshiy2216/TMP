@@ -42,7 +42,6 @@ def main():
     csv_file_path = r'E:\TMP\TMP\lab_3\4.csv'
     invalid_rows = process_csv(csv_file_path)
     checksum = calculate_checksum(invalid_rows)
-    print(f"Invalid Rows: {invalid_rows}")
     print(f"Checksum: {checksum}")
 
 
