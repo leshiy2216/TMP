@@ -29,7 +29,7 @@ def validate_row(row):
 
 def process_csv(file_path):
     invalid_row_numbers = []
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
+    with open(file_path, newline='', encoding='latin-1') as csvfile:
         reader = csv.reader(csvfile)
         next(reader)
         for i, row in enumerate(reader):
@@ -39,11 +39,12 @@ def process_csv(file_path):
 
 
 def main():
-    csv_file_path = '4.csv'
+    csv_file_path = r'E:\TMP\TMP\lab_3\4.csv'
     invalid_rows = process_csv(csv_file_path)
     checksum = calculate_checksum(invalid_rows)
     print(f"Invalid Rows: {invalid_rows}")
     print(f"Checksum: {checksum}")
+
 
 if __name__ == "__main__":
     main()
